@@ -35,6 +35,9 @@
       address: 'No. 189, Grove St, Los Angeles',
     },
   ])
+
+  let tableDataCopy = Object.assign(tableData.value)
+
   let multipleSelection = ref([])
   let dialogFormVisible = ref(false)
   let tableForm = ref({
@@ -47,6 +50,18 @@
   let dialogType = ref('add')
 
   /*方法*/
+  // 搜索
+  const handlequeryName = (val) => {
+    // console.log(queryInput.value);
+    // console.log(val)
+    if(val.length > 0) {
+      tableData.value = tableData.value.filter(item=>item.name.toLowerCase().match(val.toLowerCase()))
+    } else {
+      tableData.value = tableDataCopy
+    }
+    
+  }
+
   // 编辑
   const handleRowEdit = (row) => {
     
@@ -126,7 +141,8 @@
 
     <!-- query-->
     <div class="query-box">
-      <el-input class= "query-input" v-model="queryInput" placeholder="请输入姓名搜索"/>
+      <el-input class= "query-input" v-model="queryInput" placeholder="请输入姓名搜索" 
+      @input="handlequeryName"/>
       <div class="button-list">
         <el-button type="primary" @click="handleAdd">增加</el-button>
         <el-button type="danger" @click="handleDelList" v-if="(multipleSelection.length) > 0">
